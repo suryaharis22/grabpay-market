@@ -3,7 +3,9 @@ import axios from 'axios';
 
 // Create an axios instance with basic configuration
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api', // Replace with your API's base URL
+    baseURL: '/api',
+    // baseURL: 'http://localhost:3000/api', 
+    // Replace with your API's base URL
     timeout: 10000, // Timeout of 10 seconds
 });
 

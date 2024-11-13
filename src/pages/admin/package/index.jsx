@@ -7,21 +7,9 @@ import { useEffect, useState } from 'react';
 
 const AdminPage = () => {
     const router = useRouter();
-    const [profile, setProfile] = useState(null);
-
-    useEffect(() => {
-        const profileData = localStorage.getItem('profile');
-        if (profileData) {
-            setProfile(JSON.parse(profileData));
-        }
-    }, []);
-    const handleLogout = () => {
-        logout(router);  // Pass router to the logout function
-    };
-
     return (
         <div className='container p-6'>
-            <h1 className='text=[30px] font-bold'>Paket</h1>
+            <h1 className='text=[30px] font-bold leading-10'>Paket</h1>
 
             <PackageTable />
 

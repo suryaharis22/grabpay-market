@@ -18,7 +18,7 @@ const ProductTable = () => {
     // Fetch Products using getData
     const fetchProducts = async () => {
         try {
-            let url = 'http://localhost:3000/api/products';
+            let url = '/products';
             const queryParams = new URLSearchParams({
                 page: currentPage,
                 per_page: perPage,
@@ -47,7 +47,7 @@ const ProductTable = () => {
     // Fetch Categories using getData
     const fetchCategories = async () => {
         try {
-            const data = await getData('http://localhost:3000/api/categories?page=1&per_page=10');
+            const data = await getData('/categories?page=1&per_page=10');
             setCategories(data.body);
         } catch (error) {
             console.error('Error fetching categories:', error);

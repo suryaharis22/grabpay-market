@@ -15,7 +15,6 @@ const DashboardLayoutAdmin = ({ children }) => {
 
                 <div className=" flex-1 p-6  bg-[#ededed] ">
                     {children}
-                    {children}
                 </div>
             </div>
         </div>

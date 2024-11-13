@@ -23,7 +23,7 @@ const AddProduct = () => {
 
     const fetchPackages = async () => {
         try {
-            const data = await getData('http://localhost:3000/api/packages?page=1&per_page=10');
+            const data = await getData('/packages?page=1&per_page=10');
             setPackages(data.body);
         } catch (error) {
             console.error('Error fetching packages:', error);

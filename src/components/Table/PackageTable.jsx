@@ -24,7 +24,7 @@ const ProviderTable = () => {
     // Fetch Packages using getData
     const fetchPackages = async () => {
         try {
-            let url = 'http://localhost:3000/api/packages';
+            let url = '/packages';
             const queryParams = new URLSearchParams({
                 page: currentPage,
                 per_page: perPage,
@@ -54,7 +54,7 @@ const ProviderTable = () => {
     // Fetch Providers using getData
     const fetchProviders = async () => {
         try {
-            const data = await getData('http://localhost:3000/api/providers?page=1&per_page=10');
+            const data = await getData('/providers?page=1&per_page=10');
             setProviders(data.body);
         } catch (error) {
             console.error('Error fetching providers:', error);
