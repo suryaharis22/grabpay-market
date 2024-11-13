@@ -1,20 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import Router from 'next/router';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import Loading from '@/components/Loading';
 
-const login = (login) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Check if access_token is missing and remove localStorage profile
+    useEffect(() => {
+        const token = Cookies.get('access_token');
+        if (!token) {
+            localStorage.removeItem('profile');
+        }
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
-    }
+
+        try {
+            const response = await axios.post('https://api.escuelajs.co/api/v1/auth/login/', {
+                email,
+                password,
+            });
+
+            const { access_token } = response.data;
+
+            // Save token in cookies
+            Cookies.set('access_token', access_token, { expires: 1 }); // Token saved for 1 day
+
+            // Get profile data
+            const profileResponse = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            });
+
+            // Save profile data in localStorage
+            localStorage.setItem('profile', JSON.stringify(profileResponse.data));
+
+            // Redirect based on role
+            const { role } = profileResponse.data;
+            if (role === 'admin') {
+                Router.push('/admin');
+            } else if (role === 'customer') {
+                Router.push('/customer');
+            }
+        } catch (error) {
+            setError('Login failed. Please check your credentials.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="flex justify-center items-center h-screen">
-            <div className="">
-                <img src="/logo.png" alt="Logo" className="w-32 h-auto" />
-            </div>
-            <div className="flex justify-center items-center">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            {loading && <Loading />}
+
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
                         <label className="block text-gray-700">Email</label>
@@ -71,6 +119,6 @@ const login = (login) => {
             </div>
         </div>
     );
-}
+};
 
-export default login;
+export default Login;
