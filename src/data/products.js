@@ -1,0 +1,70 @@
+// data/products.js
+export const products = [
+    { id: 1, title: "Samsung Galaxy S7", id_package: 1, price: 500, stock: 25, status: "ready", color: ["Black", "Silver", "Gold"] },
+    { id: 2, title: "iPhone 11", id_package: 2, price: 800, stock: 15, status: "ready", color: ["White", "Black", "Red"] },
+    { id: 3, title: "Xiaomi Redmi Note 8", id_package: 3, price: 300, stock: 40, status: "ready", color: ["Blue", "Black"] },
+    { id: 4, title: "Oppo A5s", id_package: 4, price: 250, stock: 30, status: "ready", color: ["Gold", "Black"] },
+    { id: 5, title: "Huawei P30 Lite", id_package: 5, price: 450, stock: 20, status: "ready", color: ["Blue", "Black"] },
+    { id: 6, title: "Vivo V15", id_package: 6, price: 400, stock: 10, status: "ready", color: ["Red", "Black"] },
+    { id: 7, title: "Samsung Galaxy A51", id_package: 7, price: 350, stock: 35, status: "ready", color: ["Black", "Silver"] },
+    { id: 8, title: "Realme 5", id_package: 8, price: 200, stock: 50, status: "ready", color: ["Blue", "Black"] },
+    { id: 9, title: "Nokia 6.1", id_package: 9, price: 220, stock: 45, status: "ready", color: ["Blue", "Black"] },
+    { id: 10, title: "OnePlus 7 Pro", id_package: 10, price: 600, stock: 5, status: "ready", color: ["Gray", "Black"] },
+    { id: 11, title: "Google Pixel 3", id_package: 1, price: 700, stock: 12, status: "ready", color: ["Black", "White"] },
+    { id: 12, title: "LG G7 ThinQ", id_package: 2, price: 480, stock: 20, status: "ready", color: ["Silver", "Black"] },
+    { id: 13, title: "Sony Xperia 10", id_package: 3, price: 350, stock: 30, status: "ready", color: ["Black", "Blue"] },
+    { id: 14, title: "Motorola Moto G8", id_package: 4, price: 290, stock: 40, status: "ready", color: ["White", "Blue"] },
+    { id: 15, title: "Asus ROG Phone 2", id_package: 5, price: 1000, stock: 8, status: "ready", color: ["Black"] },
+    { id: 16, title: "Samsung Galaxy Note 10", id_package: 6, price: 950, stock: 18, status: "ready", color: ["Aura Glow", "Black"] },
+    { id: 17, title: "iPhone 12 Mini", id_package: 7, price: 700, stock: 20, status: "ready", color: ["Red", "Blue", "White"] },
+    { id: 18, title: "Huawei Mate 20 Pro", id_package: 8, price: 800, stock: 10, status: "ready", color: ["Emerald Green", "Black"] },
+    { id: 19, title: "Realme X2 Pro", id_package: 9, price: 500, stock: 25, status: "ready", color: ["White", "Blue"] },
+    { id: 20, title: "Oppo Reno 3", id_package: 10, price: 350, stock: 35, status: "ready", color: ["Black", "Blue"] },
+    { id: 21, title: "Xiaomi Mi 9", id_package: 1, price: 450, stock: 28, status: "ready", color: ["Black", "Blue"] },
+    { id: 22, title: "OnePlus 8T", id_package: 2, price: 700, stock: 15, status: "ready", color: ["Green", "Gray"] },
+    { id: 23, title: "Samsung Galaxy A71", id_package: 3, price: 400, stock: 30, status: "ready", color: ["Black", "Silver"] },
+    { id: 24, title: "Xiaomi Mi A3", id_package: 4, price: 220, stock: 60, status: "ready", color: ["White", "Gray"] },
+    { id: 25, title: "Vivo Y91", id_package: 5, price: 200, stock: 45, status: "ready", color: ["Black", "Blue"] },
+    { id: 26, title: "Google Pixel 4a", id_package: 6, price: 350, stock: 25, status: "ready", color: ["Black"] },
+    { id: 27, title: "Sony Xperia 5 II", id_package: 7, price: 950, stock: 10, status: "ready", color: ["Black", "Gray"] },
+    { id: 28, title: "LG Velvet", id_package: 8, price: 600, stock: 20, status: "ready", color: ["Pink", "Black"] },
+    { id: 29, title: "iPhone XR", id_package: 9, price: 500, stock: 30, status: "ready", color: ["Black", "Yellow"] },
+    { id: 30, title: "Samsung Galaxy Z Flip", id_package: 10, price: 1300, stock: 8, status: "ready", color: ["Black", "Purple"] },
+    { id: 31, title: "Motorola Razr", id_package: 1, price: 1400, stock: 5, status: "ready", color: ["Black", "Gold"] },
+    { id: 32, title: "Nokia 7.2", id_package: 2, price: 300, stock: 40, status: "ready", color: ["Cyan", "Charcoal"] },
+    { id: 33, title: "Realme C3", id_package: 3, price: 150, stock: 60, status: "ready", color: ["Blue", "Red"] },
+    { id: 34, title: "OnePlus Nord", id_package: 4, price: 500, stock: 20, status: "ready", color: ["Gray", "Blue"] },
+    { id: 35, title: "Samsung Galaxy S20", id_package: 5, price: 900, stock: 15, status: "ready", color: ["Gray", "Pink"] },
+    { id: 36, title: "Xiaomi Mi Note 10", id_package: 6, price: 550, stock: 25, status: "ready", color: ["Green", "White"] },
+    { id: 37, title: "Huawei Y9 Prime", id_package: 7, price: 350, stock: 20, status: "ready", color: ["Blue", "Green"] },
+    { id: 38, title: "Sony Xperia L4", id_package: 8, price: 300, stock: 30, status: "ready", color: ["Black"] },
+    { id: 39, title: "LG Q70", id_package: 9, price: 400, stock: 18, status: "ready", color: ["Blue", "Black"] },
+    { id: 40, title: "Asus Zenfone 6", id_package: 10, price: 600, stock: 12, status: "ready", color: ["Black", "Silver"] }
+];
+
+// data/products.js
+export const packages = [
+    { id: 1, name: "12 GB 1 month", prefix_code: "SM", id_provider: 1 },
+    { id: 2, name: "24 GB 3 months", prefix_code: "IP", id_provider: 2 },
+    { id: 3, name: "36 GB 6 months", prefix_code: "XM", id_provider: 3 },
+    { id: 4, name: "48 GB 1 year", prefix_code: "OP", id_provider: 4 },
+    { id: 5, name: "10 GB 1 month", prefix_code: "HW", id_provider: 1 },
+    { id: 6, name: "20 GB 2 months", prefix_code: "VV", id_provider: 2 },
+    { id: 7, name: "30 GB 3 months", prefix_code: "SG", id_provider: 3 },
+    { id: 8, name: "40 GB 4 months", prefix_code: "RM", id_provider: 4 },
+    { id: 9, name: "50 GB 5 months", prefix_code: "NK", id_provider: 1 },
+    { id: 10, name: "60 GB 6 months", prefix_code: "OP7", id_provider: 2 }
+];
+
+export const providers = [
+    { id: 1, name: "Telkom", image_logo: "/images/telkom.png" },
+    { id: 2, name: "Indosat", image_logo: "/images/indosat.png" },
+    { id: 3, name: "XL", image_logo: "/images/xl.png" },
+    { id: 4, name: "Smartfren", image_logo: "/images/smartfren.png" },
+    { id: 5, name: "Tri", image_logo: "/images/tri.png" },
+    { id: 6, name: "Axis", image_logo: "/images/axis.png" },
+    { id: 7, name: "By.U", image_logo: "/images/byu.png" },
+    { id: 8, name: "Bolt", image_logo: "/images/bolt.png" },
+    { id: 9, name: "MyRepublic", image_logo: "/images/myrepublic.png" },
+    { id: 10, name: "Biznet", image_logo: "/images/biznet.png" }
+];
