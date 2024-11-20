@@ -30,14 +30,14 @@ export async function middleware(request) {
             if (profile.role === 'admin') {
                 url.pathname = '/admin'; // Redirect ke /admin untuk admin
                 return NextResponse.redirect(url);
-            } else if (profile.role === 'customer') {
+            } else if (profile.role === 'user') {
                 url.pathname = '/customer'; // Redirect ke /customer untuk customer
                 return NextResponse.redirect(url);
             }
         }
 
         // Validasi role dan akses halaman
-        if (profile.role === 'customer' && isAdminPage) {
+        if (profile.role === 'user' && isAdminPage) {
             url.pathname = '/customer'; // Redirect ke halaman customer jika role customer mengakses halaman admin
             return NextResponse.redirect(url);
         }

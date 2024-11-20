@@ -45,7 +45,7 @@ function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </DashboardLayoutAdmin>
     );
-  } else if (role === 'customer') {
+  } else if (role === 'user') {
     return (
       <DashboardLayoutCustomer>
         <Component {...pageProps} />

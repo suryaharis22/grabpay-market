@@ -1,31 +1,31 @@
 {
-    "name": "34567",
-    "description": "34567",
-    "thumbnail": "product/csuv2836km5bagm1n8sg.jpeg",
+    "name": "tess",
+    "description": "dscscs",
+    "thumbnail": "product/csuvd136km5bagm1n8u0.png",
     "variants": [
         {
-            "price": "34567",
-            "discount": "456",
-            "stock": "4567",
+            "price": "567890",
+            "discount": "2345",
+            "stock": "9874",
             "warranty": "",
             "media_galleries": [
                 {
-                    "file_name": "ilustrasi-delivery-order-do-online.jpg",
-                    "file": "product/csuv2836km5bagm1n8tg.jpg",
-                    "media_type": "image/jpeg"
+                    "file_name": "download.png",
+                    "file": "product/csuvd136km5bagm1n8ug.png",
+                    "media_type": "image/png"
                 },
                 {
                     "file_name": "images.png",
-                    "file": "product/csuv2836km5bagm1n8t0.png",
+                    "file": "product/csuvd136km5bagm1n8v0.png",
                     "media_type": "image/png"
                 }
             ],
             "attributes": [
                 {
-                    "attribute_label": "rtyui",
-                    "value": "value",
-                    "option_label": "Option Label",
-                    "attribute_name": ""
+                    "attribute_label": "Warna",
+                    "value": "#f90101",
+                    "option_label": "Merah",
+                    "attribute_name": "Warna Smartphone"
                 }
             ]
         }

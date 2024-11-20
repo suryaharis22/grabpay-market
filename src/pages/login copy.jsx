@@ -47,7 +47,7 @@ const Login = () => {
             const { role } = profileResponse.data;
             if (role === 'admin') {
                 Router.push('/admin');
-            } else if (role === 'customer') {
+            } else if (role === 'user') {
                 Router.push('/customer');
             }
         } catch (error) {
