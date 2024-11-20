@@ -6,27 +6,27 @@ import { PiPencilLine } from "react-icons/pi";
 import { TbCirclePlus } from "react-icons/tb";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import Link from 'next/link';
+import sensorNumber from '@/utils/sensor_number';
 
 
-const ProductTable = () => {
+const UserTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [products, setProducts] = useState([]);
-    const [packages, setPackages] = useState([]);
+    const [users, setUsers] = useState([]);
     const [perPage, setPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [minPrice, setMinPrice] = useState();
-    const [maxPrice, setMaxPrice] = useState(Infinity);
-    const [selectedPackage, setSelectedPackage] = useState('');
-    const [sortColumn, setSortColumn] = useState('title');
+    const [sortColumn, setSortColumn] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
     const [openMenu, setOpenMenu] = useState(null);
+    const [searchName, setSearchName] = useState('');
+    const [searchStore, setSearchStore] = useState('');
 
-    // Fetch Products using getData
-    const fetchProducts = async () => {
+    // Fetch Packages using getData
+    const fetchPackages = async () => {
         try {
-            let url = '/products';
+            let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/user/all-user?`;
+
+            // Membuat query parameter
             const queryParams = new URLSearchParams({
                 page: currentPage,
                 per_page: perPage,
@@ -34,27 +34,17 @@ const ProductTable = () => {
                 order: sortOrder,
             });
 
-            if (minPrice !== undefined && minPrice !== null && !isNaN(minPrice)) {
-                queryParams.append('min_price', minPrice);
+            if (searchName) {
+                queryParams.append("full_name", searchName);
             }
 
-            if (maxPrice !== undefined && maxPrice !== null && !isNaN(maxPrice)) {
-                queryParams.append('max_price', maxPrice);
-            } else {
-                queryParams.append('max_price', Infinity);
+            if (searchStore) {
+                queryParams.append("store", searchStore);
             }
 
-            let data;
+            const data = await getData(`${url}${queryParams.toString()}`);
 
-            if (searchTerm) {
-                data = await getData(`${url}?search=${searchTerm}&${queryParams.toString()}`);
-            } else if (selectedPackage) {
-                data = await getData(`${url}?packages=${selectedPackage}&${queryParams.toString()}`);
-            } else {
-                data = await getData(`${url}?${queryParams.toString()}`);
-            }
-
-            setProducts(data.body);
+            setUsers(data.body);
             setTotalPages(data.meta.page_count);
             setTotalItems(data.meta.total);
         } catch (error) {
@@ -62,31 +52,17 @@ const ProductTable = () => {
         }
     };
 
-    // Fetch Packages using getData
-    const fetchPackages = async () => {
-        try {
-            const data = await getData('/packages?page=1&per_page=10');
-            setPackages(data.body);
-        } catch (error) {
-            console.error('Error fetching packages:', error);
-        }
-    };
 
-    // Use Effect to Fetch Packages on Initial Render
+    // Use Effect to Fetch Packages when any relevant dependency changes
     useEffect(() => {
         fetchPackages();
-    }, []);
-
-    // Use Effect to Fetch Products when any relevant dependency changes
-    useEffect(() => {
-        fetchProducts();
-    }, [currentPage, perPage, searchTerm, selectedPackage, sortColumn, sortOrder, minPrice, maxPrice]);
+    }, [currentPage, perPage, searchName, searchStore, sortColumn, sortOrder]);
 
 
     // Handle Search Change
-    const handleSearchChange = (e) => {
+    const handleSearchNameChange = (e) => {
         setCurrentPage(1);
-        setSearchTerm(e.target.value);
+        setSearchName(e.target.value);
     };
 
     // Handle Min Price Change
@@ -99,11 +75,7 @@ const ProductTable = () => {
         setMaxPrice(e.target.value);
     }
 
-    // Handle Package Filter Change
-    const handlePackageChange = (e) => {
-        setCurrentPage(1);
-        setSelectedPackage(e.target.value);
-    };
+
 
     // Handle Entries Per Page Change
     const handleEntriesPerPageChange = (e) => {
@@ -132,67 +104,28 @@ const ProductTable = () => {
 
     return (
         <>
-            <div className="mb-4 flex justify-between items-center">
+            <div className="my-4 flex justify-between items-center">
                 <div className="flex space-x-4">
 
 
-                    <div class="relative">
+                    <div className="relative">
                         <input
                             type="text"
-                            class="w-full pr-10 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  "
+                            className="w-full pr-10 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  "
                             placeholder="Search"
-                            value={searchTerm}
-                            onChange={handleSearchChange} />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+                            value={searchName}
+                            onChange={handleSearchNameChange} />
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
 
                             <FaSearch className='w-4 h-4 text-gray-500' />
                         </div>
                     </div>
 
-                    <select
-                        onChange={handlePackageChange}
-                        value={selectedPackage}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-                    >
-                        <option value="">All Packages</option>
-                        {packages.map((pkg) => (
-                            <option key={pkg.id} value={pkg.name}>
-                                {pkg.name}
-                            </option>
-                        ))}
-                    </select>
 
-
-                    {/* <div class="relative">
-                        <input
-                            type="number"
-                            min={0}
-                            onKeyDown={(e) => e.key === 'e' && e.preventDefault()}
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5"
-                            placeholder="Minimum Price"
-                            value={minPrice}
-                            onChange={handleMinPriceChange} />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                            <IoMdArrowDropdown className='w-4 h-4 text-gray-500' />
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <input
-                            type="number"
-                            min={0}
-                            onKeyDown={(e) => e.key === 'e' && e.preventDefault()}
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 p-2.5"
-                            placeholder="Maximum Price"
-                            value={maxPrice}
-                            onChange={handleMaxPriceChange} />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                            <IoMdArrowDropup className='w-4 h-4 text-gray-500' />
-                        </div>
-                    </div> */}
 
                 </div>
 
-                <Link href="/admin/product/add-product" className='flex items-center gap-2 bg-primary hover:bg-black text-white py-2 px-4 rounded-xl  text-gray-900 text-sm rounded-lg'><TbCirclePlus size={20} />Tambah</Link>
+                <Link href="/admin/add-package" className='flex items-center gap-2 bg-primary hover:bg-black text-white py-2 px-4 rounded-xl  text-gray-900 text-sm rounded-lg'><TbCirclePlus size={20} />Tambah</Link>
 
             </div>
 
@@ -204,10 +137,10 @@ const ProductTable = () => {
                         <tr>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('title')}
+                                    onClick={() => handleSortChange('full_name')}
                                     className="flex items-center cursor-pointer">
-                                    Neme
-                                    {sortColumn === 'title' && (
+                                    Full Name
+                                    {sortColumn === 'full_name' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
@@ -218,10 +151,10 @@ const ProductTable = () => {
                             </th>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('price')}
+                                    onClick={() => handleSortChange('email')}
                                     className="flex items-center cursor-pointer">
-                                    Price
-                                    {sortColumn === 'price' && (
+                                    Email
+                                    {sortColumn === 'email' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
@@ -232,10 +165,10 @@ const ProductTable = () => {
                             </th>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('package.name')}
+                                    onClick={() => handleSortChange('phone_number')}
                                     className="flex items-center cursor-pointer">
-                                    Package
-                                    {sortColumn === 'package' && (
+                                    Phone Number
+                                    {sortColumn === 'phone_number' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
@@ -246,10 +179,10 @@ const ProductTable = () => {
                             </th>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('stock')}
+                                    onClick={() => handleSortChange('nik')}
                                     className="flex items-center cursor-pointer">
-                                    Stock
-                                    {sortColumn === 'stock' && (
+                                    NIK
+                                    {sortColumn === 'nik' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
@@ -271,38 +204,42 @@ const ProductTable = () => {
                                         </span>
                                     )}
                                 </div>
-
                             </th>
+
+
                             <th className=" text-center px-6">
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
-                            <tr key={product.id} className="bg-white border-b">
+                        {users.map((pkg) => (
+                            <tr key={pkg?.id} className="bg-white border-b">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {product.title}
+                                    {pkg?.full_name}
                                 </th>
-                                <td className="px-6 py-4">${product.price.toFixed(2)}</td>
-                                <td className="px-6 py-4">{product.package.name}</td>
-                                <td className="px-6 py-4">{product.stock}</td>
-                                <td className="px-4 py-3">
+
+                                <td className="px-6 py-4">{pkg?.email}</td>
+                                <td className="px-6 py-4">{pkg?.phone_number}</td>
+                                <td className="px-6 py-4">{sensorNumber(pkg?.nik)}</td>
+                                <td className="px-6 py-4">{pkg?.is_active}
                                     <span
-                                        className={`px-2 py-1 rounded-lg text-white ${product.status === 'ready' ? 'bg-green-500' : 'bg-red-500'}`}
+                                        className={`px-2 py-1 rounded-lg text-white ${pkg.is_active ? 'bg-green-500' : 'bg-red-500'}`}
                                     >
-                                        {product.status}
+                                        {pkg.is_active ? 'Active' : 'Inactive'}
                                     </span>
                                 </td>
+
+
                                 <td className="relative flex justify-center items-center py-4 space-x-2 ">
                                     <button
-                                        onClick={() => handleMenuToggle(product.id)}
+                                        onClick={() => handleMenuToggle(pkg?.id)}
                                         className="font-medium text-primary hover:animate-pulse"
                                     >
-                                        {openMenu === product.id ? <FaTimes size={20} /> : <FaEllipsisH size={20} />}
+                                        {openMenu === pkg?.id ? <FaTimes size={20} /> : <FaEllipsisH size={20} />}
 
                                     </button>
-                                    {openMenu === product.id && (
+                                    {openMenu === pkg?.id && (
                                         <div className=" p-1 bg-white z-20 text-black flex space-x-1 border border-2 border-primary rounded-xl">
                                             <button className="px-2 py-2 bg-red-500 text-white border rounded-md hover:bg-red-600"><FaRegTrashAlt /></button>
                                             <button className="px-2 py-2 bg-yellow-500 text-black border rounded-md hover:bg-yellow-600"><PiPencilLine /></button>
@@ -342,10 +279,9 @@ const ProductTable = () => {
                 </div>
             </div>
 
-
-
         </>
+
     );
 };
 
-export default ProductTable;
+export default UserTable;

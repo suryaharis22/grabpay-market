@@ -1,0 +1,33 @@
+{
+    "name": "34567",
+    "description": "34567",
+    "thumbnail": "product/csuv2836km5bagm1n8sg.jpeg",
+    "variants": [
+        {
+            "price": "34567",
+            "discount": "456",
+            "stock": "4567",
+            "warranty": "",
+            "media_galleries": [
+                {
+                    "file_name": "ilustrasi-delivery-order-do-online.jpg",
+                    "file": "product/csuv2836km5bagm1n8tg.jpg",
+                    "media_type": "image/jpeg"
+                },
+                {
+                    "file_name": "images.png",
+                    "file": "product/csuv2836km5bagm1n8t0.png",
+                    "media_type": "image/png"
+                }
+            ],
+            "attributes": [
+                {
+                    "attribute_label": "rtyui",
+                    "value": "value",
+                    "option_label": "Option Label",
+                    "attribute_name": ""
+                }
+            ]
+        }
+    ]
+}

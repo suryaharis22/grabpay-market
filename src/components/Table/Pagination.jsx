@@ -38,7 +38,7 @@ const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
                         <button
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-200 hover:text-gray-700"
                         >
                             <FaChevronLeft />
                         </button>
@@ -47,7 +47,7 @@ const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
                         <li key={page}>
                             <button
                                 onClick={() => handlePageChange(page)}
-                                className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ${currentPage === page ? 'bg-primary text-white' : 'text-gray-500 bg-white'
+                                className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 hover:bg-gray-200 hover:text-gray-700 ${currentPage === page ? 'bg-primary text-white' : 'text-gray-500 bg-white'
                                     }`}
                             >
                                 {page}
@@ -58,7 +58,7 @@ const Pagination = ({ currentPage, totalPages, handlePageChange }) => {
                         <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-200 hover:text-gray-700"
                         >
                             <FaChevronRight />
                         </button>

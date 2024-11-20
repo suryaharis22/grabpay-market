@@ -3,12 +3,34 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { FaHome, FaUsers, FaCog, FaRegAddressCard } from 'react-icons/fa';
+import { MdOutlineDashboard } from 'react-icons/md';
+import { LiaFileContractSolid } from "react-icons/lia";
+import { RiShoppingBag4Line } from "react-icons/ri";
+import { BsSdCard } from "react-icons/bs";
+import { IoPricetagsOutline } from "react-icons/io5";
 // components/Header.js
 const Header = ({ role }) => {
     const router = useRouter();
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [menuBarOpen, setMenuBarOpen] = useState(false);
     const [profile, setProfile] = useState(null);
+
+    const sidebarItemsAdmin = [
+        { name: 'Dashboard', icon: <MdOutlineDashboard />, href: '/admin' },
+        { name: 'Transaksi', icon: <LiaFileContractSolid />, href: '/admin/transactions' },
+        { name: 'Users', icon: <FaRegAddressCard />, href: '/admin/user' },
+        { name: 'Produk HP', icon: <RiShoppingBag4Line />, href: '/admin/product' },
+        { name: 'Paket', icon: <BsSdCard />, href: '/admin/package' },
+        { name: 'Brand', icon: <IoPricetagsOutline />, href: '/admin/brand' },
+    ];
+
+    const sidebarItemsCustomer = [
+        { name: 'Home', icon: <FaHome />, href: '/customer' },
+        { name: 'Profile', icon: <FaUsers />, href: '/profile' },
+    ];
+
+    const sidebarItems = role === 'admin' ? sidebarItemsAdmin : sidebarItemsCustomer;
 
     useEffect(() => {
         const profileData = localStorage.getItem('profile');
@@ -41,7 +63,7 @@ const Header = ({ role }) => {
                             alt="user photo"
                         />
                         <div className="flex flex-col items-start ml-1">
-                            <span className="text-black">Name</span>
+                            <span className="text-black capitalize">{profile?.full_name}</span>
                             <span className="text-black">{role === 'admin' ? 'Admin' : 'Customer'}</span>
                         </div>
                     </button>
@@ -113,48 +135,35 @@ const Header = ({ role }) => {
                     className={`items-center justify-between ${menuBarOpen ? '' : 'hidden'} w-full md:flex md:w-auto md:order-1`}
                     id="navbar-user"
                 >
-                    <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                                aria-current="page"
-                            >
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
-                            >
-                                About
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
-                            >
-                                Services
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
-                            >
-                                Pricing
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0"
-                            >
-                                Contact
-                            </a>
-                        </li>
+                    <ul className="flex flex-col  font-medium p-2 md:p-0 md:hidden mt-2 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
+                        {sidebarItems.map((item, index) => {
+                            const isActive = router.pathname === item.href;
+                            return (
+
+                                <li key={index}>
+                                    <Link
+                                        href={item.href}
+                                        onClick={() => setMenuBarOpen(!menuBarOpen)}
+                                        className={`flex items-center block py-2 px-3 rounded-lg my-1 ${isActive ? 'text-white bg-primary' : 'text-black hover:text-white hover:bg-primary'} group`}
+                                        aria-current="page"
+                                    >
+                                        {item.icon}
+                                        <span className="ml-2 capitalize">{item.name}</span>
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                        {/* <li key={index}>
+                            <Link href={item.href} className={`w-full h-[60px] text-[24px] flex items-center p-[20px] rounded-lg ${isActive ? 'text-white bg-primary' : 'text-black hover:text-white hover:bg-primary'} group`}>
+
+                                {item.icon}
+                                <span className="ml-[20px] capitalize">{item.name}</span>
+                            </Link>
+                        </li> */}
+
+
+
+
                     </ul>
                 </div>
             </div>

@@ -1,11 +1,14 @@
 import { FaHome, FaUsers, FaCog, FaRegAddressCard } from 'react-icons/fa';
 import { MdOutlineDashboard } from 'react-icons/md';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/router'; // Import useRouter hook
 import { LiaFileContractSolid } from "react-icons/lia";
 import { RiShoppingBag4Line } from "react-icons/ri";
 import { BsSdCard } from "react-icons/bs";
+import { IoPricetagsOutline } from "react-icons/io5";
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter hook
+
+
 
 const Sidebar = ({ role }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,9 +17,10 @@ const Sidebar = ({ role }) => {
     const sidebarItemsAdmin = [
         { name: 'Dashboard', icon: <MdOutlineDashboard />, href: '/admin' },
         { name: 'Transaksi', icon: <LiaFileContractSolid />, href: '/admin/transactions' },
-        { name: 'Users', icon: <FaRegAddressCard />, href: '/admin/users' },
+        { name: 'Users', icon: <FaRegAddressCard />, href: '/admin/user' },
         { name: 'Produk HP', icon: <RiShoppingBag4Line />, href: '/admin/product' },
         { name: 'Paket', icon: <BsSdCard />, href: '/admin/package' },
+        { name: 'Brand', icon: <IoPricetagsOutline />, href: '/admin/brand' },
     ];
 
     const sidebarItemsCustomer = [
@@ -47,7 +51,7 @@ const Sidebar = ({ role }) => {
                             <Link href={item.href} className={`w-full h-[60px] text-[24px] flex items-center p-[20px] rounded-lg ${isActive ? 'text-white bg-primary' : 'text-black hover:text-white hover:bg-primary'} group`}>
 
                                 {item.icon}
-                                <span className="ml-[20px]">{item.name}</span>
+                                <span className="ml-[20px] capitalize">{item.name}</span>
                             </Link>
                         </li>
                     );

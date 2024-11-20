@@ -5,7 +5,7 @@ import { logout } from '@/utils/logout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const AdminPage = () => {
+const Products = () => {
     const router = useRouter();
     const [profile, setProfile] = useState(null);
 
@@ -30,4 +30,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default Products;

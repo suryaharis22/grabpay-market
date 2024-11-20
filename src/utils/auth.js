@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function validateAccessToken(accessToken) {
     try {
-        const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+        const response = await axios.get(`https://api.bundling.nuncorp.id/api/v1/auth/profile/fetch`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

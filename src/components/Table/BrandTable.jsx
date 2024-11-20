@@ -8,22 +8,22 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import Link from 'next/link';
 
 
-const PackageTable = () => {
+const BrandTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [packages, setPackages] = useState([]);
+    const [brands, setBrands] = useState([]);
     const [perPage, setPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
+    const [searchName, setSearchName] = useState('');
+    const [searchStore, setSearchStore] = useState('');
     const [sortColumn, setSortColumn] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
     const [openMenu, setOpenMenu] = useState(null);
-    const [searchName, setSearchName] = useState('');
-    const [searchStore, setSearchStore] = useState('');
 
-    // Fetch Packages using getData
-    const fetchPackages = async () => {
+    // Fetch Brands using getData
+    const fetchBrands = async () => {
         try {
-            let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/bundling/all-package?`;
+            let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/brand/all-brand?`;
 
             // Membuat query parameter
             const queryParams = new URLSearchParams({
@@ -43,36 +43,35 @@ const PackageTable = () => {
 
             const data = await getData(`${url}${queryParams.toString()}`);
 
-            setPackages(data.body);
+            setBrands(data.body);
             setTotalPages(data.meta.page_count);
             setTotalItems(data.meta.total);
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error('Error fetching brands:', error);
         }
     };
 
 
-    // Use Effect to Fetch Packages when any relevant dependency changes
+
+
+
+    // Use Effect to Fetch Brands when any relevant dependency changes
     useEffect(() => {
-        fetchPackages();
+        fetchBrands();
     }, [currentPage, perPage, searchName, searchStore, sortColumn, sortOrder]);
 
 
-    // Handle Search Change
+    // Handle Search by Name Change
     const handleSearchNameChange = (e) => {
         setCurrentPage(1);
         setSearchName(e.target.value);
     };
 
-    // Handle Min Price Change
-    const handleMinPriceChange = (e) => {
+    // Handle Search by Store Change
+    const handleSearchStoreChange = (e) => {
         setCurrentPage(1);
-        setMinPrice(e.target.value);
-    }
-    const handleMaxPriceChange = (e) => {
-        setCurrentPage(1);
-        setMaxPrice(e.target.value);
-    }
+        setSearchStore(e.target.value);
+    };
 
 
 
@@ -107,14 +106,26 @@ const PackageTable = () => {
                 <div className="flex space-x-4">
 
 
-                    <div className="relative">
+                    <div class="relative">
                         <input
                             type="text"
-                            className="w-full pr-10 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  "
-                            placeholder="Search"
+                            class="w-full pr-10 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  "
+                            placeholder="Search by Name"
                             value={searchName}
                             onChange={handleSearchNameChange} />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
+
+                            <FaSearch className='w-4 h-4 text-gray-500' />
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full pr-10 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  "
+                            placeholder="Search by Store"
+                            value={searchStore}
+                            onChange={handleSearchStoreChange} />
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
 
                             <FaSearch className='w-4 h-4 text-gray-500' />
                         </div>
@@ -124,7 +135,7 @@ const PackageTable = () => {
 
                 </div>
 
-                <Link href="/admin/package/add-package" className='flex items-center gap-2 bg-primary hover:bg-black text-white py-2 px-4 rounded-xl  text-gray-900 text-sm rounded-lg'><TbCirclePlus size={20} />Tambah</Link>
+                <Link href="/admin/brand/add-brand" className='flex items-center gap-2 bg-primary hover:bg-black text-white py-2 px-4 rounded-xl  text-gray-900 text-sm rounded-lg'><TbCirclePlus size={20} />Tambah</Link>
 
             </div>
 
@@ -150,10 +161,10 @@ const PackageTable = () => {
                             </th>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('active_period')}
+                                    onClick={() => handleSortChange('store')}
                                     className="flex items-center cursor-pointer">
-                                    Active Period
-                                    {sortColumn === 'active_period' && (
+                                    Store
+                                    {sortColumn === 'store' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
@@ -164,47 +175,18 @@ const PackageTable = () => {
                             </th>
                             <th className="px-6 py-3">
                                 <div
-                                    onClick={() => handleSortChange('bundling_code')}
-                                    className="flex items-center cursor-pointer">
-                                    Kode
-                                    {sortColumn === 'bundling_code' && (
+                                    // onClick={() => handleSortChange('description')}
+                                    className="flex items-center ">
+                                    Description
+                                    {/* {sortColumn === 'description' && (
                                         <span
 
                                             className="w-3 h-3 ms-1.5 ">
                                             {sortOrder === 'asc' ? <FaSortUp /> : <FaSortDown />}
                                         </span>
-                                    )}
+                                    )} */}
                                 </div>
                             </th>
-                            <th className="px-6 py-3">
-                                <div
-                                    onClick={() => handleSortChange('provider')}
-                                    className="flex items-center cursor-pointer">
-                                    Provider
-                                    {sortColumn === 'provider' && (
-                                        <span
-
-                                            className="w-3 h-3 ms-1.5 ">
-                                            {sortOrder === 'asc' ? <FaSortUp /> : <FaSortDown />}
-                                        </span>
-                                    )}
-                                </div>
-                            </th>
-                            <th className="px-6 py-3">
-                                <div
-                                    onClick={() => handleSortChange('status')}
-                                    className="flex items-center cursor-pointer">
-                                    Status
-                                    {sortColumn === 'status' && (
-                                        <span
-
-                                            className="w-3 h-3 ms-1.5 ">
-                                            {sortOrder === 'asc' ? <FaSortUp /> : <FaSortDown />}
-                                        </span>
-                                    )}
-                                </div>
-                            </th>
-
 
                             <th className=" text-center px-6">
                                 Action
@@ -212,46 +194,52 @@ const PackageTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {packages.map((pkg) => (
-                            <tr key={pkg?.id} className="bg-white border-b">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {pkg?.name}
-                                </th>
+                        {brands.length > 0 ? (
+                            brands.map((brand) => (
+                                <tr key={brand?.id} className="bg-white border-b">
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {brand?.name}
+                                    </th>
 
-                                <td className="px-6 py-4">{pkg?.active_period}</td>
-                                <td className="px-6 py-4">{pkg?.bundling_code}</td>
-                                <td className="px-6 py-4">{pkg?.provider}</td>
-                                <td className="px-6 py-4">{pkg?.is_active}
-                                    <span
-                                        className={`px-2 py-1 rounded-lg text-white ${pkg.is_active ? 'bg-green-500' : 'bg-red-500'}`}
-                                    >
-                                        {pkg.is_active ? 'Active' : 'Inactive'}
-                                    </span>
-                                </td>
+                                    <td className="px-6 py-4">{brand?.store}</td>
+                                    <td className="px-6 py-4 w-[500px]">
+                                        <p className="overflow-hidden text-ellipsis line-clamp-3 hover:line-clamp-none transition-all duration-300">
+                                            {brand?.description}
+                                        </p>
+                                    </td>
 
-
-                                <td className="relative flex justify-center items-center py-4 space-x-2 ">
-                                    <button
-                                        onClick={() => handleMenuToggle(pkg?.id)}
-                                        className="font-medium text-primary hover:animate-pulse"
-                                    >
-                                        {openMenu === pkg?.id ? <FaTimes size={20} /> : <FaEllipsisH size={20} />}
-
-                                    </button>
-                                    {openMenu === pkg?.id && (
-                                        <div className=" p-1 bg-white z-20 text-black flex space-x-1 border border-2 border-primary rounded-xl">
-                                            <button className="px-2 py-2 bg-red-500 text-white border rounded-md hover:bg-red-600"><FaRegTrashAlt /></button>
-                                            <button className="px-2 py-2 bg-yellow-500 text-black border rounded-md hover:bg-yellow-600"><PiPencilLine /></button>
-                                            <button className="px-2 py-2 bg-blue-500 text-black border rounded-md hover:bg-blue-600"><FaRegEye /></button>
-                                        </div>
-
-
-                                    )}
+                                    <td className="relative flex justify-center items-center py-4 space-x-2">
+                                        <button
+                                            onClick={() => handleMenuToggle(brand?.id)}
+                                            className="font-medium text-primary hover:animate-pulse"
+                                        >
+                                            {openMenu === brand?.id ? <FaTimes size={20} /> : <FaEllipsisH size={20} />}
+                                        </button>
+                                        {openMenu === brand?.id && (
+                                            <div className="p-1 bg-white z-20 text-black flex space-x-1 border border-2 border-primary rounded-xl">
+                                                <button className="px-2 py-2 bg-red-500 text-white border rounded-md hover:bg-red-600">
+                                                    <FaRegTrashAlt />
+                                                </button>
+                                                <button className="px-2 py-2 bg-yellow-500 text-black border rounded-md hover:bg-yellow-600">
+                                                    <PiPencilLine />
+                                                </button>
+                                                <button className="px-2 py-2 bg-blue-500 text-black border rounded-md hover:bg-blue-600">
+                                                    <FaRegEye />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="py-4 text-center text-gray-500 bg-gray-50">
+                                    No data available
                                 </td>
                             </tr>
-                        ))}
-
+                        )}
                     </tbody>
+
                 </table>
             </div>
             {/* Pagination Controls */}
@@ -283,4 +271,4 @@ const PackageTable = () => {
     );
 };
 
-export default PackageTable;
+export default BrandTable;

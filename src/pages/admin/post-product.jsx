@@ -4,7 +4,6 @@ import { getData, postData } from "@/utils/api";
 import blobToBinary from "@/utils/blobToBinary";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaPlus, FaTimes, FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const PostProduct = () => {
@@ -133,21 +132,6 @@ const PostProduct = () => {
         setProductData({ ...productData, variants: updatedVariants });
     };
 
-    const handleRemoveImage = (variantIndex, mediaIndex) => {
-        setProductData((prevState) => {
-            const updatedVariants = [...prevState.variants];
-
-            // Hapus gambar berdasarkan index
-            updatedVariants[variantIndex].media_galleries.splice(mediaIndex, 1);
-
-            return {
-                ...prevState,
-                variants: updatedVariants,
-            };
-        });
-    };
-
-
     // Handle attribute field changes
     const handleAttributeChange = (variantIndex, attrIndex, field, value) => {
         const updatedVariants = [...productData.variants];
@@ -177,8 +161,6 @@ const PostProduct = () => {
         // Perbarui state
         setProductData({ ...productData, variants: updatedVariants });
     };
-
-
 
     const uploadImage = async (file, destination) => {
         console.log('destination', destination);
@@ -213,6 +195,7 @@ const PostProduct = () => {
 
     const uploadData = async (data) => {
         try {
+            // Persiapkan data untuk dikirim
             const setupData = {
                 name: data.name,
                 description: data.description,
@@ -355,248 +338,318 @@ const PostProduct = () => {
 
     return (
         <div className="container p-6">
-            <h1 className="text-2xl font-semibold mb-6">Add Produk HP</h1>
-
-            <form onSubmit={handleSubmit} className="flex flex-col bg-white p-6 rounded-xl shadow">
-                <h2 className="text-xl font-bold mb-4">Form Produk</h2>
+            <h1 className="text-[30px] font-semibold leading-10">Produk HP</h1>
+            <form onSubmit={handleSubmit} className="flex flex-col bg-white p-4">
+                <h1 className="text-2xl font-bold">Post Product</h1>
 
                 {/* Product Name */}
-                <div className="mb-4">
+                <div>
                     <label className="block mb-1 font-medium">Product Name</label>
                     <input
                         type="text"
-                        className="w-full p-2 border rounded-xl"
+                        className="w-full p-2 border rounded"
                         value={productData.name}
                         onChange={(e) => handleInputChange("name", e.target.value)}
                     />
                 </div>
 
                 {/* Description */}
-                <div className="mb-4">
+                <div>
                     <label className="block mb-1 font-medium">Description</label>
                     <textarea
-                        className="w-full p-2 border rounded-xl"
+                        className="w-full p-2 border rounded"
                         value={productData.description}
                         onChange={(e) => handleInputChange("description", e.target.value)}
                     />
                 </div>
-
-                {/* Additional Fields */}
-                {[
-                    { label: "Screen", key: "screen" },
-                    { label: "Rear Camera", key: "rear_camera" },
-                    { label: "Front Camera", key: "front_camera" },
-                    { label: "Processor", key: "processor" },
-                    { label: "Battery", key: "battery" },
-                ].map((field, index) => (
-                    <div key={index} className="mb-4">
-                        <label className="block mb-1 font-medium">{field.label}</label>
-                        <input
-                            type="text"
-                            className="w-full p-2 border rounded-xl"
-                            value={productData[field.key]}
-                            onChange={(e) => handleInputChange(field.key, e.target.value)}
-                        />
-                    </div>
-                ))}
-
-                {/* Dropdowns */}
-                {[
-                    { label: "Brand", key: "brand_id", options: brands },
-                    { label: "Bundling", key: "bundling_id", options: bundlings },
-                ].map((dropdown, index) => (
-                    <div key={index} className="mb-4">
-                        <label className="block mb-1 font-medium">{dropdown.label}</label>
-                        <select
-                            className="w-full p-2 border rounded-xl"
-                            value={productData[dropdown.key] || ""}
-                            onChange={(e) => handleInputChange(dropdown.key, e.target.value)}
-                        >
-                            <option value="" disabled>
-                                Select {dropdown.label}
+                <div>
+                    <label className="block mb-1 font-medium">Screen</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        value={productData.screen}
+                        onChange={(e) => handleInputChange("screen", e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Rear Camera</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        value={productData.rear_camera}
+                        onChange={(e) => handleInputChange("rear_camera", e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Front Camera</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        value={productData.front_camera}
+                        onChange={(e) => handleInputChange("front_camera", e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Processor</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        value={productData.processor}
+                        onChange={(e) => handleInputChange("processor", e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Battery</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        value={productData.battery}
+                        onChange={(e) => handleInputChange("battery", e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Brand</label>
+                    <select
+                        className="w-full p-2 border rounded"
+                        value={productData.brand_id || ""}
+                        onChange={(e) => handleInputChange("brand_id", e.target.value)}
+                    >
+                        <option value="" disabled>
+                            Select Brand
+                        </option>
+                        {brands.map((brand) => (
+                            <option key={brand.id} value={brand.id}>
+                                {brand.name}
                             </option>
-                            {dropdown.options.map((option) => (
-                                <option key={option.id} value={option.id}>
-                                    {option.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                ))}
-
-                {/* Checkbox */}
-                <div className="mb-4">
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label className="block mb-1 font-medium">Bundling</label>
+                    <select
+                        className="w-full p-2 border rounded"
+                        value={productData.bundling_id || ""}
+                        onChange={(e) => handleInputChange("bundling_id", e.target.value)}
+                    >
+                        <option value="" disabled>
+                            Select Bundling
+                        </option>
+                        {bundlings.map((bundling) => (
+                            <option key={bundling.id} value={bundling.id}>
+                                {bundling.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
                     <label className="block mb-1 font-medium">Is Available</label>
                     <input
                         type="checkbox"
                         checked={productData.is_available}
-                        className="p-2 border rounded-xl"
+                        className="p-2 border rounded"
                         onChange={(e) => handleInputChange("is_available", e.target.checked)}
                     />
                 </div>
 
                 {/* Thumbnail */}
-                <div className="mb-6">
+                <div>
                     <label className="block mb-2 font-medium">Thumbnail</label>
                     <input
                         type="file"
-                        accept="image/*"
                         onChange={(e) => handleFileChange(e, "thumbnail")}
-                        className="w-full p-2 border rounded-xl"
+                        className="w-full p-2 border rounded"
                     />
-                    {/* Render Thumbnail jika ada */}
-                    {productData.thumbnail && (
-                        <div className="mt-4 flex flex-wrap">
-                            <div className="relative ">
-                                <img
-                                    src={URL.createObjectURL(productData.thumbnail)}
-                                    alt="Thumbnail Preview"
-                                    className="w-24 h-24 object-cover m-1 rounded-xl"
-                                />
-                                {/* Tombol Hapus */}
-
-                            </div>
-                        </div>
-                    )}
                 </div>
 
-
-                {/* Variants */}
-                <h3 className="text-lg font-medium mb-4">Variants</h3>
+                {/* Variants Section */}
+                <h2 className="text-xl font-medium">Variants</h2>
                 {productData.variants.map((variant, index) => (
-                    <div key={index} className="p-4 border rounded-xl bg-gray-50 mb-6">
-                        {[
-                            { label: "Price", key: "price", type: "number", min: 1 },
-                            { label: "Discount (%)", key: "discount", type: "number", min: 0 },
-                            { label: "Stock", key: "stock", type: "number", min: 1 },
-                            { label: "Warranty", key: "warranty", type: "text" },
-                        ].map((field, idx) => (
-                            <div key={idx} className="mb-4">
-                                <label className="block mb-1 font-medium">{field.label}</label>
-                                <input
-                                    type={field.type}
-                                    className="w-full p-2 border rounded-xl"
-                                    value={variant[field.key]}
-                                    onChange={(e) => handleVariantChange(index, field.key, e.target.value)}
-                                    min={field.type === "number" ? field.min : undefined}
-                                    onKeyDown={(e) => {
-                                        if (
-                                            field.type === "number" &&
-                                            (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-")
-                                        ) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                />
-                            </div>
-                        ))}
-
+                    <div key={index} className="p-4 border rounded bg-gray-50 mb-6">
+                        {/* Variant fields */}
+                        <div>
+                            <label className="block mb-1 font-medium">Price</label>
+                            <input
+                                type="number"
+                                className="w-full p-2 border rounded"
+                                value={variant.price}
+                                onChange={(e) => handleVariantChange(index, "price", e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1 font-medium">Discount (%)</label>
+                            <input
+                                type="number"
+                                className="w-full p-2 border rounded"
+                                value={variant.discount}
+                                onChange={(e) => handleVariantChange(index, "discount", e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1 font-medium">Stock</label>
+                            <input
+                                type="number"
+                                className="w-full p-2 border rounded"
+                                value={variant.stock}
+                                onChange={(e) => handleVariantChange(index, "stock", e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1 font-medium">Warranty</label>
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                value={variant.warranty}
+                                onChange={(e) => handleVariantChange(index, "warranty", e.target.value)}
+                            />
+                        </div>
 
                         {/* Media Galleries */}
-                        <div className="mb-4">
+                        <div>
                             <label className="block mb-2 font-medium">Media Galleries</label>
                             <input
                                 type="file"
                                 multiple
                                 onChange={(e) => handleFileChange(e, "media_galleries", index)}
-                                className="w-full p-2 border rounded-xl"
+                                className="w-full p-2 border rounded"
                             />
-                            <div className="mt-4 flex flex-wrap space-x-2">
-                                {variant.media_galleries.map((file, fileIndex) => (
-                                    <div key={fileIndex} className="relative group bg-gray-200 p-0.5 rounded-xl flex justify-center items-center">
-                                        {/* Image */}
+                            {/* Display uploaded images */}
+                            {variant.media_galleries.length > 0 && (
+                                <div className="mt-4 flex flex-wrap ">
+                                    {variant.media_galleries.map((file, fileIndex) => (
                                         <img
+                                            key={fileIndex}
                                             src={URL.createObjectURL(file)}
                                             alt={`Media ${fileIndex}`}
                                             className="w-24 h-24 object-cover m-1 rounded-xl"
                                         />
-                                        {/* Close Icon */}
-                                        <button
-                                            type="button"
-                                            className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full text-sm opacity-0 group-hover:opacity-100 transition"
-                                            onClick={() => handleRemoveImage(index, fileIndex)}
-                                        >
-                                            <FaTimes />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
-                        {/* Attributes */}
-                        <h4 className="text-md font-medium mb-2">Attributes</h4>
+                        {/* Attributes Section */}
+                        <h3 className="font-medium text-lg mb-2">Attributes</h3>
                         {variant.attributes.map((attribute, attrIndex) => (
-                            <div
-                                key={attrIndex}
-                                className="p-4 border rounded-xl bg-gray-100 mb-4"
-                            >
-                                {/* Attribute Fields */}
-                                {["Attribute Label", "Value", "Option Label", "Attribute Name"].map((attr, idx) => (
-                                    <div key={idx} className="mb-2">
-                                        <label className="block mb-1 font-medium">{attr}</label>
+                            <div key={attrIndex} className="p-4 border rounded bg-gray-50 mb-4">
+                                {/* Attribute Label */}
+                                <div>
+                                    <label className="block mb-1 font-medium">Attribute Label</label>
+                                    <select
+                                        className="w-full p-2 border rounded"
+                                        value={attribute.attribute_label || ""}
+                                        onChange={(e) =>
+                                            handleAttributeChange(index, attrIndex, "attribute_label", e.target.value)
+                                        }
+                                    >
+                                        <option value="" disabled>
+                                            Pilih Label Atribut
+                                        </option>
+                                        <option value="Kapasitas">Kapasitas</option>
+                                        <option value="Warna">Warna</option>
+                                        <option value="Model">Model</option>
+                                    </select>
+                                </div>
+
+                                {/* Conditional Fields */}
+                                {attribute.attribute_label === "Warna" ? (
+                                    <div>
+                                        <label className="block mb-1 font-medium">Warna</label>
                                         <input
-                                            type="text"
-                                            className="w-full p-2 border rounded-xl"
-                                            value={attribute[attr.toLowerCase().replace(/ /g, "_")] || ""}
+                                            type="color"
+                                            className="w-full px-2 border rounded"
+                                            value={attribute.value || "#000000"}
                                             onChange={(e) =>
-                                                handleAttributeChange(index, attrIndex, attr.toLowerCase().replace(/ /g, "_"), e.target.value)
+                                                handleAttributeChange(index, attrIndex, "value", e.target.value)
                                             }
                                         />
                                     </div>
-                                ))}
+                                ) : (
+                                    <div>
+                                        <label className="block mb-1 font-medium">Value</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-2 border rounded"
+                                            value={attribute.value || ""}
+                                            onChange={(e) =>
+                                                handleAttributeChange(index, attrIndex, "value", e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Option Label */}
+                                <div>
+                                    <label className="block mb-1 font-medium">Option Label</label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-2 border rounded"
+                                        value={attribute.option_label || ""}
+                                        onChange={(e) =>
+                                            handleAttributeChange(index, attrIndex, "option_label", e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Attribute Name */}
+                                <div>
+                                    <label className="block mb-1 font-medium">Attribute Name</label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-2 border rounded"
+                                        value={attribute.attribute_name || ""}
+                                        onChange={(e) =>
+                                            handleAttributeChange(index, attrIndex, "attribute_name", e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Remove Button */}
                                 <button
                                     type="button"
                                     onClick={() => handleRemoveAttribute(index, attrIndex)}
-                                    className="flex items-center text-red-500 hover:animate-pulse"
+                                    className="text-red-500 mt-2"
                                 >
-                                    <FaTrashAlt className="mr-2" />Remove Attribute
+                                    Remove Attribute
                                 </button>
                             </div>
                         ))}
-                        <div className="flex justify-between">
-                            <button
-                                type="button"
-                                onClick={() => handleAddAttribute(index)}
-                                className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-xl mt-4"
-                            >
-                                <FaPlus className="mr-2" />
-                                Add Attribute
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => handleRemoveVariant(index)}
-                                className="flex items-center text-red-500 mt-4 hover:animate-pulse"
-                            >
-                                <FaTrashAlt className="mr-2" /> Remove Variant
-                            </button>
-                        </div>
 
+                        <button
+                            type="button"
+                            onClick={() => handleAddAttribute(index)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded mt-4"
+                        >
+                            Add Attribute
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleRemoveVariant(index)}
+                            className="text-red-500 mt-4"
+                        >
+                            Remove Variant
+                        </button>
                     </div>
                 ))}
 
                 {/* Add Variant Button */}
-                <div className="flex justify-center space-x-2">
-                    <button
-                        type="button"
-                        onClick={handleAddVariant}
-                        className="flex items-center px-4 py-2 bg-green-500 text-white rounded-xl"
-                    >
-                        <FaPlus className="mr-2" /> Add Variant
-                    </button>
+                <button
+                    type="button"
+                    onClick={handleAddVariant}
+                    className="px-4 py-2 bg-green-500 text-white rounded"
+                >
+                    Add Variant
+                </button>
 
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-blue-600 text-white rounded-xl "
-                    >
-                        Submit Product
-                    </button>
-                </div>
+                {/* Submit Button */}
+                <button
+                    type="submit"
+                    className="px-6 py-2 bg-blue-600 text-white rounded mt-6"
+                >
+                    Submit Product
+                </button>
             </form>
-
             {loading && <Loading />}
         </div>
-
     );
 };
 
