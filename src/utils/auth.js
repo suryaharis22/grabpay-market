@@ -1,3 +1,5 @@
+// utils/auth.js
+
 import axios from 'axios';
 
 export async function validateAccessToken(accessToken) {
@@ -7,9 +9,9 @@ export async function validateAccessToken(accessToken) {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('Token validation response:', response.data);
+        console.log('Token validation response:', response.data.body);
 
-        return response.data; // Return user profile data
+        return response.data.body; // Return user profile data
     } catch (error) {
         if (error.response?.status === 401) {
             console.error('Token expired or invalid, status 401:', error.response.data);

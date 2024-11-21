@@ -5,7 +5,6 @@ import { validateAccessToken } from './utils/auth';
 
 export async function middleware(request) {
     const accessToken = request.cookies.get('access_token')?.value; // Mendapatkan token dari cookies
-
     const url = request.nextUrl.clone();
     const isLoginPage = url.pathname === '/login';
 
