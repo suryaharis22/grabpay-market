@@ -23,28 +23,28 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('https://api.escuelajs.co/api/v1/auth/login/', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/auth/login`, {
                 email,
                 password,
             });
 
-            const { access_token } = response.data;
+            const { access_token } = response.data.body;
 
             // Save token in cookies
             Cookies.set('access_token', access_token, { expires: 1 }); // Token saved for 1 day
 
             // Get profile data
-            const profileResponse = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+            const profileResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/auth/profile/fetch`, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
             });
 
             // Save profile data in localStorage
-            localStorage.setItem('profile', JSON.stringify(profileResponse.data));
+            localStorage.setItem('profile', JSON.stringify(profileResponse.data.body));
 
             // Redirect based on role
-            const { role } = profileResponse.data;
+            const { role } = profileResponse.data.body;
             if (role === 'admin') {
                 Router.push('/admin');
             } else if (role === 'user') {
@@ -52,8 +52,11 @@ const Login = () => {
             }
         } catch (error) {
             setError('Login failed. Please check your credentials.');
-        } finally {
             setLoading(false);
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000);
         }
     };
 
